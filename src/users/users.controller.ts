@@ -14,22 +14,19 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
+import { UsersService } from './providers/users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
   @Get('/{:id}')
   public getAllUsers(
     @Param() getUsersParamDto: GetUsersParamDto,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
-    console.log('params', typeof getUsersParamDto);
-    console.log('getUsersParamDto', getUsersParamDto);
-    console.log('type of limit', typeof limit);
-    console.log('type of page', typeof page);
-    console.log('limit', limit);
-    console.log('page', page);
-    return 'get all users';
+    return this.usersService.findAll(getUsersParamDto, limit, page);
   }
 
   @Post()
@@ -37,9 +34,7 @@ export class UsersController {
     @Headers() headers: any,
     @Body() createUserDto: CreateUserDto,
   ) {
-    console.log('headers', headers);
-    console.log('request', createUserDto);
-    return 'create a user';
+    return this.usersService.createUser(headers, createUserDto);
   }
 
   @Patch()
