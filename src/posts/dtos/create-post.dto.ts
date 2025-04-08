@@ -17,7 +17,7 @@ import { CreatePostMetaOptionsDto } from './create-post-meta-options.dto';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class createPostDto {
+export class CreatePostDto {
   @ApiProperty({
     example: 'Post 1',
     description: 'The title of the post',

@@ -3,20 +3,24 @@ import { GetUsersParamDto } from '../dtos/get-users-param.dto';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { AuthService } from 'src/auth/providers/auth.service';
 
+/**
+ * Class to conneect to users table in database
+ */
 @Injectable()
 export class UsersService {
-  constructor(
-    @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
-  ) {}
+  // constructor(
+  //   @Inject(forwardRef(() => AuthService))
+  //   private readonly authService: AuthService,
+  // ) {}
 
+  /**
+   * Method to get all users from database
+   */
   public findAll(
     getUsersParamDto: GetUsersParamDto,
     limit: number,
     page: number,
   ) {
-    const isAuth = this.authService.isAuth();
-    console.log('isAuth', isAuth);
     return [
       {
         firstName: 'John',
@@ -28,6 +32,10 @@ export class UsersService {
       },
     ];
   }
+
+  /**
+   * Method to get one user from database
+   */
   public findOneById(id: number) {
     return {
       firstName: 'John',
@@ -35,6 +43,9 @@ export class UsersService {
     };
   }
 
+  /**
+   * Method to create user to database
+   */
   public createUser(headers, createUserDto: CreateUserDto) {
     return 'User created successfully';
   }
