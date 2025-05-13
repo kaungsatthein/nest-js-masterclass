@@ -6,6 +6,7 @@ import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
+import { Post } from './posts/post.entity';
 
 @Module({
   imports: [
@@ -21,9 +22,9 @@ import { User } from './users/user.entity';
         port: 5432,
         host: 'localhost',
         username: 'postgres',
-        password: 'Incorrect2742',
+        password: 'password',
         database: 'nestjs-blog',
-        entities: [User],
+        entities: [User, Post],
       }),
     }),
   ],
