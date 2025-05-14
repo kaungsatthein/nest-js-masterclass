@@ -14,7 +14,7 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { CreatePostMetaOptionsDto } from './create-post-meta-options.dto';
+import { CreatePostMetaOptionsDto } from '../../meta-options/dtos/create-post-meta-options.dto';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -43,7 +43,7 @@ export class CreatePostDto {
   })
   @IsString()
   @IsNotEmpty()
-  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, { message: 'Invalid slug' })
+  @Matches(/^[a-z]+(?:-[a-z]+)*$/, { message: 'Invalid slug' })
   @MaxLength(256)
   slug: string;
 
@@ -99,17 +99,21 @@ export class CreatePostDto {
   tags?: string[];
 
   @ApiPropertyOptional({
-    example: [
-      {
-        key: 'testKey',
-        value: 20,
+    type: 'object',
+    required: false,
+    items: {
+      type: 'object',
+      properties: {
+        metaValue: {
+          type: 'json',
+          description: 'The meta value of the post',
+          example: '{"sidebarEnabled": true}',
+        },
       },
-    ],
-    description: 'The meta options of the post',
+    },
   })
   @IsOptional()
-  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreatePostMetaOptionsDto)
-  metaOptions: CreatePostMetaOptionsDto[];
+  metaOptions?: CreatePostMetaOptionsDto;
 }
