@@ -3,6 +3,7 @@ import { postStatus } from '../enums/postStatusType.enum';
 import {
   IsArray,
   IsEnum,
+  IsInt,
   IsISO8601,
   IsJSON,
   IsNotEmpty,
@@ -17,6 +18,7 @@ import {
 import { CreatePostMetaOptionsDto } from '../../meta-options/dtos/create-post-meta-options.dto';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Tag } from 'src/tags/tag.entity';
 
 export class CreatePostDto {
   @ApiProperty({
@@ -90,13 +92,13 @@ export class CreatePostDto {
   publishOn?: Date;
 
   @ApiPropertyOptional({
-    example: ['nestJS', 'typescript'],
-    description: 'The Tag of the post',
+    example: [1, 2],
+    description: 'The Array Tag of the post',
   })
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  tags?: string[];
+  @IsInt({ each: true })
+  tags?: number[];
 
   @ApiPropertyOptional({
     type: 'object',
@@ -116,4 +118,13 @@ export class CreatePostDto {
   @ValidateNested({ each: true })
   @Type(() => CreatePostMetaOptionsDto)
   metaOptions?: CreatePostMetaOptionsDto;
+
+  @ApiProperty({
+    type: 'integer',
+    required: true,
+    example: 1,
+  })
+  @IsNotEmpty()
+  @IsInt()
+  authorId: number;
 }

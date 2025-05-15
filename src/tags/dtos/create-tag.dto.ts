@@ -21,11 +21,6 @@ export class CreateTagDto {
   name: string;
 
   @ApiProperty()
-  @IsEnum(postType)
-  @IsNotEmpty()
-  postType: postType;
-
-  @ApiProperty()
   @IsString()
   @IsNotEmpty()
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, { message: 'Invalid slug' })
