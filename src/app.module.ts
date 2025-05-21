@@ -5,34 +5,40 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/user.entity';
-import { Post } from './posts/post.entity';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
-import { MetaOption } from './meta-options/meta-option.entity';
-import { Tag } from './tags/tag.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import appConfig from './config/app.config';
+import databaseConfig from './config/database.config';
+
+const env = process.env.NODE_ENV;
 
 @Module({
   imports: [
     UsersModule,
     PostsModule,
     AuthModule,
-    TypeOrmModule.forRootAsync({
-      imports: [],
-      inject: [],
-      useFactory: () => ({
-        type: 'postgres',
-        synchronize: true,
-        port: 5432,
-        host: 'localhost',
-        username: 'postgres',
-        password: 'password',
-        database: 'nestjs-blog',
-        entities: [User, Post, MetaOption, Tag],
-      }),
-    }),
     TagsModule,
     MetaOptionsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: !env ? '.env' : `.env.${env}`,
+      load: [appConfig, databaseConfig],
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        synchronize: configService.get('database.synchronize'),
+        port: configService.get('database.port'),
+        username: configService.get('database.user'),
+        password: configService.get('database.password'),
+        host: configService.get('database.host'),
+        database: configService.get('database.name'),
+        autoLoadEntities: configService.get('database.autoLoadEntities'),
+      }),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -40,6 +40,7 @@ export class UsersService {
     limit: number,
     page: number,
   ) {
+    console.log('process.env.NODE_ENV', process.env.NODE_ENV);
     return [
       {
         firstName: 'John',
