@@ -13,6 +13,8 @@ import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ConfigType } from '@nestjs/config';
 import profileConfig from '../config/profile.config';
+import { UsersCreateManyProvider } from './users-create-many.provider';
+import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 
 /**
  * Class to conneect to users table in database
@@ -31,6 +33,11 @@ export class UsersService {
      */
     @Inject(profileConfig.KEY)
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+
+    /**
+     * Inject CreateManyProvider
+     */
+    private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
 
   /**
@@ -60,11 +67,12 @@ export class UsersService {
   /**
    * Method to get all users from database
    */
-  public findAll(
+  public async findAll(
     getUsersParamDto: GetUsersParamDto,
     limit: number,
     page: number,
   ) {
+    return await this.usersRepository.find();
     throw new HttpException(
       {
         status: HttpStatus.MOVED_PERMANENTLY,
@@ -100,5 +108,9 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  public async createMany(createManyUsersDto: CreateManyUsersDto) {
+    return this.usersCreateManyProvider.createMany(createManyUsersDto);
   }
 }

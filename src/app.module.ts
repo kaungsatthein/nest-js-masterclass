@@ -30,16 +30,20 @@ const env = process.env.NODE_ENV;
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        synchronize: configService.get('database.synchronize'),
-        port: configService.get('database.port'),
-        username: configService.get('database.user'),
-        password: configService.get('database.password'),
-        host: configService.get('database.host'),
-        database: configService.get('database.name'),
-        autoLoadEntities: configService.get('database.autoLoadEntities'),
-      }),
+      useFactory: (configService: ConfigService) => {
+        console.log('Connected to DB:', configService.get('database.name'));
+
+        return {
+          type: 'postgres',
+          synchronize: configService.get('database.synchronize'),
+          port: configService.get('database.port'),
+          username: configService.get('database.user'),
+          password: configService.get('database.password'),
+          host: configService.get('database.host'),
+          database: configService.get('database.name'),
+          autoLoadEntities: configService.get('database.autoLoadEntities'),
+        };
+      },
     }),
   ],
   controllers: [AppController],

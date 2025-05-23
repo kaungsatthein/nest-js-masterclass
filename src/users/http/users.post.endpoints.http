@@ -1,8 +1,27 @@
 POST http://localhost:3000/users
 Content-Type: application/json
 {
-    "firstName": "John",
-    "lastName": "Doe",
-    "email": "john@doe.com",
+    "firstName": "John4",
+    "lastName": "Doe4",
+    "email": "john@doe4.com",
     "password": "Password@123"
+}
+
+POST http://localhost:3000/users/create-many
+Content-Type: application/json
+{
+    "users": [
+    {
+    "firstName": "John1",
+    "lastName": "Doe1",
+    "email": "john@doe1.com",
+    "password": "Password@123"
+    },
+    {
+    "firstName": "John2",
+    "lastName": "Doe2",
+    "email": "john@doe2.com",
+    "password": "Password@123"
+    }
+    ]
 }

@@ -2,9 +2,9 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-  "title": "What's new with Expresjss soft delete",
+  "title": "What's new with Expresjss soft",
   "postType": "post",
-  "slug": "new-with-expresjs-soft-delete",
+  "slug": "new-with-expresjs-soft",
   "status": "draft",
   "content": "test content",
   "schema": "{\r\n \"@context\": \"https:\/\/schema.org\",\r\n \"@type\": \"Person\"\r\n }",
