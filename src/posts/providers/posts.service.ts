@@ -7,20 +7,13 @@ import { Post } from '../post.entity';
 import { MetaOption } from 'src/meta-options/meta-option.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { PatchPostDto } from '../dtos/patch-post.dto';
+import { GetPostsDto } from '../dtos/get-posts.dto';
+import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 
 @Injectable()
 export class PostsService {
   constructor(
-    /**
-     * Injecting the UsersService to get user information
-     */
-    private readonly usersService: UsersService,
-
-    /**
-     * Ingect TagsService
-     */
-    private readonly tagsService: TagsService,
-
     /**
      * Injecting the PostsRepository to interact with the database
      */
@@ -32,6 +25,21 @@ export class PostsService {
      */
     @InjectRepository(MetaOption)
     private readonly metaOptionsRepository: Repository<MetaOption>,
+
+    /**
+     * Injecting the UsersService to get user information
+     */
+    private readonly usersService: UsersService,
+
+    /**
+     * Ingect TagsService
+     */
+    private readonly tagsService: TagsService,
+
+    /**
+     * Injecting pagination provider
+     */
+    private readonly paginationProvider: PaginationProvider,
   ) {}
 
   /**
@@ -75,8 +83,17 @@ export class PostsService {
   /*
    * Getting all the posts
    */
-  public async findAll() {
-    return await this.postsRepository.find();
+  public async findAll(
+    userId: string,
+    postQuery: GetPostsDto,
+  ): Promise<Paginated<Post>> {
+    return await this.paginationProvider.paginateQuery(
+      {
+        page: postQuery.page,
+        limit: postQuery.limit,
+      },
+      this.postsRepository,
+    );
   }
 
   /**
