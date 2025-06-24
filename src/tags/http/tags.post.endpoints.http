@@ -2,7 +2,7 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-  "name": "typescript-soft-delete",
-  "slug": "typescript-soft-delete",
-  "description": "all posts typescript" 
+  "name": "javascript",
+  "slug": "javascript",
+  "description": "all posts javascript" 
 }

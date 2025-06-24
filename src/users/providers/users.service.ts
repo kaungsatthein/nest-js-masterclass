@@ -15,6 +15,8 @@ import { ConfigType } from '@nestjs/config';
 import profileConfig from '../config/profile.config';
 import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
+import { CreateUserProvider } from './create-user.provider';
+import { FindOneUserByEmailProvider } from './find-one-user-by-email.provider';
 
 /**
  * Class to conneect to users table in database
@@ -38,31 +40,17 @@ export class UsersService {
      * Inject CreateManyProvider
      */
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
+
+    /**
+     * Inject CreateUserProvider
+     */
+    private readonly createUserProvider: CreateUserProvider,
+
+    /**
+     * Inject FindOneUserByEmailProvider
+     */
+    private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
   ) {}
-
-  /**
-   * Method to create user to database
-   */
-  public async createUser(createUserDto: CreateUserDto) {
-    const existingUser = await this.usersRepository.findOne({
-      where: { email: createUserDto.email },
-    });
-
-    if (existingUser) {
-      throw new BadRequestException(
-        'User with this email already exists, please use another email',
-      );
-    }
-
-    try {
-      const newUser = this.usersRepository.create(createUserDto);
-      return await this.usersRepository.save(newUser);
-    } catch (error) {
-      throw new RequestTimeoutException('Unable to process request', {
-        description: 'Error connecting to database',
-      });
-    }
-  }
 
   /**
    * Method to get all users from database
@@ -112,5 +100,13 @@ export class UsersService {
 
   public async createMany(createManyUsersDto: CreateManyUsersDto) {
     return this.usersCreateManyProvider.createMany(createManyUsersDto);
+  }
+
+  public async createUser(createUserDto: CreateUserDto) {
+    return this.createUserProvider.createUser(createUserDto);
+  }
+
+  public async findOneByEmail(email: string) {
+    return this.findOneUserByEmailProvider.findOneByEmail(email);
   }
 }

@@ -32,8 +32,6 @@ const env = process.env.NODE_ENV;
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        console.log('Connected to DB:', configService.get('database.name'));
-
         return {
           type: 'postgres',
           synchronize: configService.get('database.synchronize'),

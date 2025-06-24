@@ -22,7 +22,7 @@ export class User {
 
   @Column({
     type: 'varchar',
-    length: 30,
+    length: 100,
     nullable: false,
     unique: true,
   })
@@ -30,7 +30,7 @@ export class User {
 
   @Column({
     type: 'varchar',
-    length: 30,
+    length: 100,
     nullable: false,
   })
   password: string;
